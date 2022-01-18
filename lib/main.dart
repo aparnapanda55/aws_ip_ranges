@@ -80,7 +80,14 @@ class _HomePageState extends State<HomePage> {
                     ),
                   )
                   .toList(),
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  region = value!;
+                  if (!data[region]!.containsKey(service)) {
+                    service = data[region]!.keys.first;
+                  }
+                });
+              },
             ),
           ),
           Expanded(
@@ -96,7 +103,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   )
                   .toList(),
-              onChanged: (value) {},
+              onChanged: (value) {
+                setState(() {
+                  service = value!;
+                });
+              },
             ),
           ),
           Expanded(
