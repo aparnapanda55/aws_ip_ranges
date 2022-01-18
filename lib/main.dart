@@ -31,7 +31,7 @@ class LaunchScreen extends StatelessWidget {
       ),
       body: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
+          constraints: const BoxConstraints(maxWidth: 600, maxHeight: 600),
           child: FutureBuilder<Map<String, Map<String, List<String>>>>(
             future: getData(),
             builder: (context, snapshot) {
@@ -94,50 +94,46 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(
-          flex: 1,
-          child: DropdownButton<String>(
-            value: region,
-            items: widget.data.keys
-                .map(
-                  (value) => DropdownMenuItem(
-                    child: Text(value),
-                    value: value,
-                  ),
-                )
-                .toList(),
-            onChanged: (value) {
-              setState(() {
-                region = value!;
-                if (!widget.data[region]!.containsKey(service)) {
-                  service = widget.data[region]!.keys.first;
-                }
-              });
-            },
-          ),
+        DropdownButton<String>(
+          isExpanded: true,
+          value: region,
+          items: widget.data.keys
+              .map(
+                (value) => DropdownMenuItem(
+                  child: Text(value),
+                  value: value,
+                ),
+              )
+              .toList(),
+          onChanged: (value) {
+            setState(() {
+              region = value!;
+              if (!widget.data[region]!.containsKey(service)) {
+                service = widget.data[region]!.keys.first;
+              }
+            });
+          },
+        ),
+        DropdownButton<String>(
+          isExpanded: true,
+          value: service,
+          items: widget.data[region]!.keys
+              .map(
+                (value) => DropdownMenuItem(
+                  child: Text(value),
+                  value: value,
+                ),
+              )
+              .toList(),
+          onChanged: (value) {
+            setState(() {
+              service = value!;
+            });
+          },
         ),
         Expanded(
-          flex: 1,
-          child: DropdownButton<String>(
-            value: service,
-            items: widget.data[region]!.keys
-                .map(
-                  (value) => DropdownMenuItem(
-                    child: Text(value),
-                    value: value,
-                  ),
-                )
-                .toList(),
-            onChanged: (value) {
-              setState(() {
-                service = value!;
-              });
-            },
-          ),
-        ),
-        Expanded(
-          flex: 8,
           child: Card(
             elevation: 10,
             child: Padding(
