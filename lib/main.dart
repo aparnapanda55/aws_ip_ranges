@@ -41,8 +41,24 @@ final data = {
   }
 };
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late String region;
+  late String service;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    region = data.keys.first;
+    service = data[region]!.keys.first;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +71,31 @@ class HomePage extends StatelessWidget {
           Expanded(
             flex: 1,
             child: DropdownButton<String>(
-              items: [],
+              value: region,
+              items: data.keys
+                  .map(
+                    (value) => DropdownMenuItem(
+                      child: Text(value),
+                      value: value,
+                    ),
+                  )
+                  .toList(),
               onChanged: (value) {},
             ),
           ),
           Expanded(
             flex: 1,
             child: DropdownButton<String>(
-              items: [],
+              value: service,
+              items: data[region]!
+                  .keys
+                  .map(
+                    (value) => DropdownMenuItem(
+                      child: Text(value),
+                      value: value,
+                    ),
+                  )
+                  .toList(),
               onChanged: (value) {},
             ),
           ),
