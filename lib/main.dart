@@ -96,64 +96,84 @@ class _HomePageState extends State<HomePage> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          children: [
-            Expanded(
-              flex: 4,
-              child: Column(
-                children: [
-                  DropdownButton<String>(
-                    isExpanded: true,
-                    value: region,
-                    items: widget.data.keys
-                        .map(
-                          (value) => DropdownMenuItem(
-                            child: Text(value),
-                            value: value,
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        region = value!;
-                        if (!widget.data[region]!.containsKey(service)) {
-                          service = widget.data[region]!.keys.first;
-                        }
-                      });
-                    },
-                  ),
-                  DropdownButton<String>(
-                    isExpanded: true,
-                    value: service,
-                    items: widget.data[region]!.keys
-                        .map(
-                          (value) => DropdownMenuItem(
-                            child: Text(value),
-                            value: value,
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        service = value!;
-                      });
-                    },
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: IconButton(
-                tooltip: 'Copy all',
-                onPressed: () {},
-                icon: Icon(
-                  Icons.copy,
-                  size: 50,
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 4,
+                child: Column(
+                  children: [
+                    DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: 'Region',
+                        filled: true,
+                        border: InputBorder.none,
+                      ),
+                      isExpanded: true,
+                      value: region,
+                      items: widget.data.keys
+                          .map(
+                            (value) => DropdownMenuItem(
+                              child: Text(value),
+                              value: value,
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          region = value!;
+                          if (!widget.data[region]!.containsKey(service)) {
+                            service = widget.data[region]!.keys.first;
+                          }
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: 'Region',
+                        filled: true,
+                        border: InputBorder.none,
+                      ),
+                      isExpanded: true,
+                      value: service,
+                      items: widget.data[region]!.keys
+                          .map(
+                            (value) => DropdownMenuItem(
+                              child: Text(value),
+                              value: value,
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          service = value!;
+                        });
+                      },
+                    )
+                  ],
                 ),
               ),
-            )
-          ],
+              Expanded(
+                flex: 1,
+                child: Column(
+                  children: [
+                    Text('${widget.data[region]![service]!.length} Results'),
+                    IconButton(
+                      tooltip: 'Copy all',
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.copy,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
         Expanded(
           child: Card(
