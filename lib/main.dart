@@ -113,12 +113,29 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             flex: 8,
             child: ListView(
-              children:
-                  data[region]![service]!.map((value) => Text(value)).toList(),
+              children: data[region]![service]!
+                  .map((value) => IpTile(
+                        value: value,
+                      ))
+                  .toList(),
             ),
           )
         ],
       ),
+    );
+  }
+}
+
+class IpTile extends StatelessWidget {
+  const IpTile({
+    required this.value,
+    Key? key,
+  }) : super(key: key);
+  final String value;
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(value),
     );
   }
 }
