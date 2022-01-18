@@ -96,42 +96,64 @@ class _HomePageState extends State<HomePage> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        DropdownButton<String>(
-          isExpanded: true,
-          value: region,
-          items: widget.data.keys
-              .map(
-                (value) => DropdownMenuItem(
-                  child: Text(value),
-                  value: value,
+        Row(
+          children: [
+            Expanded(
+              flex: 4,
+              child: Column(
+                children: [
+                  DropdownButton<String>(
+                    isExpanded: true,
+                    value: region,
+                    items: widget.data.keys
+                        .map(
+                          (value) => DropdownMenuItem(
+                            child: Text(value),
+                            value: value,
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        region = value!;
+                        if (!widget.data[region]!.containsKey(service)) {
+                          service = widget.data[region]!.keys.first;
+                        }
+                      });
+                    },
+                  ),
+                  DropdownButton<String>(
+                    isExpanded: true,
+                    value: service,
+                    items: widget.data[region]!.keys
+                        .map(
+                          (value) => DropdownMenuItem(
+                            child: Text(value),
+                            value: value,
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        service = value!;
+                      });
+                    },
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: IconButton(
+                tooltip: 'Copy all',
+                onPressed: () {},
+                icon: Icon(
+                  Icons.copy,
+                  size: 50,
                 ),
-              )
-              .toList(),
-          onChanged: (value) {
-            setState(() {
-              region = value!;
-              if (!widget.data[region]!.containsKey(service)) {
-                service = widget.data[region]!.keys.first;
-              }
-            });
-          },
-        ),
-        DropdownButton<String>(
-          isExpanded: true,
-          value: service,
-          items: widget.data[region]!.keys
-              .map(
-                (value) => DropdownMenuItem(
-                  child: Text(value),
-                  value: value,
-                ),
-              )
-              .toList(),
-          onChanged: (value) {
-            setState(() {
-              service = value!;
-            });
-          },
+              ),
+            )
+          ],
         ),
         Expanded(
           child: Card(
