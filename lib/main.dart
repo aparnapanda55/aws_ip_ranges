@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
 const url = 'https://ip-ranges.amazonaws.com/ip-ranges.json';
 
@@ -155,6 +156,20 @@ class IpTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(value),
+      trailing: IconButton(
+        icon: const Icon(Icons.copy),
+        onPressed: () {
+          Clipboard.setData(ClipboardData(text: value)).then(
+            (value) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Copied to clipboard!'),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
