@@ -102,7 +102,8 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             flex: 8,
             child: ListView(
-              children: [],
+              children:
+                  data[region]![service]!.map((value) => Text(value)).toList(),
             ),
           )
         ],
