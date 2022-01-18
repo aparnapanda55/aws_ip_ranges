@@ -138,12 +138,15 @@ class _HomePageState extends State<HomePage> {
         ),
         Expanded(
           flex: 8,
-          child: ListView(
-            children: widget.data[region]![service]!
-                .map((value) => IpTile(
-                      value: value,
-                    ))
-                .toList(),
+          child: Card(
+            elevation: 10,
+            child: ListView(
+              children: widget.data[region]![service]!
+                  .map((value) => IpTile(
+                        value: value,
+                      ))
+                  .toList(),
+            ),
           ),
         )
       ],
