@@ -25,17 +25,22 @@ class LaunchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, Map<String, List<String>>>>(
-      future: getData(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (snapshot.hasError) {
-          return const Text('Error');
-        }
-        return HomePage(data: snapshot.data!);
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('AWS IP Ranges'),
+      ),
+      body: FutureBuilder<Map<String, Map<String, List<String>>>>(
+        future: getData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return const Text('Error');
+          }
+          return HomePage(data: snapshot.data!);
+        },
+      ),
     );
   }
 }
@@ -83,65 +88,60 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('AWS IP Ranges'),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 1,
-            child: DropdownButton<String>(
-              value: region,
-              items: widget.data.keys
-                  .map(
-                    (value) => DropdownMenuItem(
-                      child: Text(value),
-                      value: value,
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  region = value!;
-                  if (!widget.data[region]!.containsKey(service)) {
-                    service = widget.data[region]!.keys.first;
-                  }
-                });
-              },
-            ),
+    return Column(
+      children: [
+        Expanded(
+          flex: 1,
+          child: DropdownButton<String>(
+            value: region,
+            items: widget.data.keys
+                .map(
+                  (value) => DropdownMenuItem(
+                    child: Text(value),
+                    value: value,
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              setState(() {
+                region = value!;
+                if (!widget.data[region]!.containsKey(service)) {
+                  service = widget.data[region]!.keys.first;
+                }
+              });
+            },
           ),
-          Expanded(
-            flex: 1,
-            child: DropdownButton<String>(
-              value: service,
-              items: widget.data[region]!.keys
-                  .map(
-                    (value) => DropdownMenuItem(
-                      child: Text(value),
-                      value: value,
-                    ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  service = value!;
-                });
-              },
-            ),
+        ),
+        Expanded(
+          flex: 1,
+          child: DropdownButton<String>(
+            value: service,
+            items: widget.data[region]!.keys
+                .map(
+                  (value) => DropdownMenuItem(
+                    child: Text(value),
+                    value: value,
+                  ),
+                )
+                .toList(),
+            onChanged: (value) {
+              setState(() {
+                service = value!;
+              });
+            },
           ),
-          Expanded(
-            flex: 8,
-            child: ListView(
-              children: widget.data[region]![service]!
-                  .map((value) => IpTile(
-                        value: value,
-                      ))
-                  .toList(),
-            ),
-          )
-        ],
-      ),
+        ),
+        Expanded(
+          flex: 8,
+          child: ListView(
+            children: widget.data[region]![service]!
+                .map((value) => IpTile(
+                      value: value,
+                    ))
+                .toList(),
+          ),
+        )
+      ],
     );
   }
 }
