@@ -29,17 +29,22 @@ class LaunchScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('AWS IP Ranges'),
       ),
-      body: FutureBuilder<Map<String, Map<String, List<String>>>>(
-        future: getData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return const Text('Error');
-          }
-          return HomePage(data: snapshot.data!);
-        },
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600),
+          child: FutureBuilder<Map<String, Map<String, List<String>>>>(
+            future: getData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return const Text('Error');
+              }
+              return HomePage(data: snapshot.data!);
+            },
+          ),
+        ),
       ),
     );
   }
