@@ -140,12 +140,15 @@ class _HomePageState extends State<HomePage> {
           flex: 8,
           child: Card(
             elevation: 10,
-            child: ListView(
-              children: widget.data[region]![service]!
-                  .map((value) => IpTile(
-                        value: value,
-                      ))
-                  .toList(),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ListView.separated(
+                itemBuilder: (context, index) {
+                  return IpTile(value: widget.data[region]![service]![index]);
+                },
+                separatorBuilder: (context, index) => const Divider(),
+                itemCount: widget.data[region]![service]!.length,
+              ),
             ),
           ),
         )
